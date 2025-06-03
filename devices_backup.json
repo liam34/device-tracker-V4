@@ -1,0 +1,32 @@
+[
+  {
+    "device_id": "TEST-001",
+    "device_type": "Laptop",
+    "building": "Main Building",
+    "area": "IT Department",
+    "status": "Available",
+    "last_updated": "2025-06-01T21:35:34.018Z",
+    "assigned_to": "John Doe",
+    "notes": "Test device for development"
+  },
+  {
+    "device_id": "TEST-002",
+    "device_type": "Monitor",
+    "building": "North Wing",
+    "area": "Design Studio",
+    "status": "In Use",
+    "last_updated": "2025-06-01T21:35:34.018Z",
+    "assigned_to": "Jane Smith",
+    "notes": "24-inch 4K display"
+  },
+  {
+    "device_id": "TEST-003",
+    "device_type": "Printer",
+    "building": "South Wing",
+    "area": "Admin Office",
+    "status": "Maintenance",
+    "last_updated": "2025-06-01T21:35:34.018Z",
+    "assigned_to": null,
+    "notes": "Needs toner replacement"
+  }
+]
