@@ -9,7 +9,7 @@ async function updateDatabase() {
     database: 'devicetrackerDB',
     user: 'postgres',
     password: 'liam34',
-    ssl: true
+    ssl: false
   });
 
   try {

@@ -11,7 +11,7 @@ const parseDatabaseUrl = (url: string) => {
       database: parsed.pathname.slice(1),
       user: parsed.username,
       password: parsed.password,
-      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+      ssl: false // Disable SSL for both development and production
     }
   } catch (error) {
     console.error('Error parsing DATABASE_URL:', error)

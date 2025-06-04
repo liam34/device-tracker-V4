@@ -7,6 +7,8 @@ import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { AlertCircle } from "lucide-react"
 
 interface EditDevicePageProps {
   params: Promise<{
@@ -24,10 +26,6 @@ export default async function EditDevicePage({ params, searchParams }: EditDevic
 
     const user = await requireAdmin()
     const device = await getDeviceById(id)
-
-    if (!device) {
-      notFound()
-    }
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
@@ -50,7 +48,15 @@ export default async function EditDevicePage({ params, searchParams }: EditDevic
               <CardTitle className="text-xl sm:text-2xl">Edit Device Details</CardTitle>
             </CardHeader>
             <CardContent className="p-4 sm:p-6 pt-0">
-              <EditDeviceForm device={device} />
+              <EditDeviceForm device={device || { 
+                device_id: id,
+                device_type: '',
+                building: '',
+                area: '',
+                status: 'Available',
+                assigned_to: '',
+                notes: ''
+              }} />
             </CardContent>
           </Card>
         </div>
@@ -58,6 +64,23 @@ export default async function EditDevicePage({ params, searchParams }: EditDevic
     )
   } catch (error) {
     console.error('Error in EditDevicePage:', error)
-    notFound()
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-2xl">
+          <Alert variant="destructive" className="mb-4">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              An error occurred while loading the device. Please try again later.
+            </AlertDescription>
+          </Alert>
+          <Link href="/">
+            <Button variant="default" className="text-sm sm:text-base bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Devices
+            </Button>
+          </Link>
+        </div>
+      </div>
+    )
   }
 }

@@ -41,12 +41,32 @@ async function setupDatabase() {
   try {
     // Read the schema file
     const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
-    // Execute the schema
-    await pool.query(schema);
+    
+    // Split the schema into individual statements
+    const statements = schema
+      .split(';')
+      .map(statement => statement.trim())
+      .filter(statement => statement.length > 0)
+      // Filter out INSERT statements to preserve existing data
+      .filter(statement => !statement.toUpperCase().includes('INSERT INTO'));
+
+    // Execute each statement separately
+    for (const statement of statements) {
+      try {
+        await pool.query(statement);
+        console.log('Executed statement successfully');
+      } catch (error) {
+        // If the error is about table already existing, that's fine
+        if (error.code === '42P07') {
+          console.log('Table already exists, continuing...');
+        } else {
+          console.error('Error executing statement:', error.message);
+        }
+      }
+    }
+
     console.log('Database setup completed successfully!');
-    console.log('\nDefault users created:');
-    console.log('Admin - username: admin, password: admin123');
-    console.log('User - username: user, password: user123');
+    console.log('\nDatabase structure has been updated while preserving existing data.');
   } catch (error) {
     console.error('Error setting up database:', error);
   } finally {

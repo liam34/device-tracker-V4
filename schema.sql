@@ -26,29 +26,4 @@ COMMENT ON COLUMN devices.device_id IS 'Device ID can contain letters, numbers, 
 CREATE INDEX IF NOT EXISTS idx_username ON users(username);
 CREATE INDEX IF NOT EXISTS idx_device_id ON devices(device_id);
 CREATE INDEX IF NOT EXISTS idx_device_status ON devices(status);
-CREATE INDEX IF NOT EXISTS idx_device_assigned_to ON devices(assigned_to);
-
--- Insert default admin user
-INSERT INTO users (username, password, role)
-VALUES ('admin', 'admin123', 'admin')
-ON CONFLICT (username) DO NOTHING;
-
--- Insert default regular user
-INSERT INTO users (username, password, role)
-VALUES ('user', 'user123', 'user')
-ON CONFLICT (username) DO NOTHING;
-
--- Insert some test devices
-INSERT INTO devices (
-    device_id,
-    device_type,
-    building,
-    area,
-    status,
-    assigned_to,
-    notes
-) VALUES 
-    ('TEST-001', 'Laptop', 'Main Building', 'IT Department', 'Available', 'John Doe', 'Test device for development'),
-    ('TEST-002', 'Monitor', 'North Wing', 'Design Studio', 'In Use', 'Jane Smith', '24-inch 4K display'),
-    ('TEST-003', 'Printer', 'South Wing', 'Admin Office', 'Maintenance', NULL, 'Needs toner replacement')
-ON CONFLICT (device_id) DO NOTHING; 
+CREATE INDEX IF NOT EXISTS idx_device_assigned_to ON devices(assigned_to); 

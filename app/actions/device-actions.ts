@@ -126,9 +126,28 @@ export async function updateDevice(prevState: any, formData: FormData) {
     const oldDeviceId = formData.get('old_device_id')
 
     if (!newDeviceId || !deviceType || !building || !area || !oldDeviceId) {
-      return { error: 'All fields are required' }
+      return { 
+        success: false,
+        error: 'All fields are required' 
+      }
     }
 
+    // If device ID is being changed, check if the new ID already exists
+    if (newDeviceId.toString() !== oldDeviceId.toString()) {
+      const existingDevice = await queryOne(
+        `SELECT device_id FROM devices WHERE device_id = $1`,
+        [newDeviceId.toString()]
+      )
+
+      if (existingDevice) {
+        return { 
+          success: false,
+          error: 'A device with this ID already exists. Please use a different device ID.'
+        }
+      }
+    }
+
+    // Update the device
     await query(
       `UPDATE devices 
       SET 
