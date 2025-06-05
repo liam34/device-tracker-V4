@@ -11,7 +11,9 @@ const parseDatabaseUrl = (url: string) => {
       database: parsed.pathname.slice(1),
       user: parsed.username,
       password: parsed.password,
-      ssl: false // Disable SSL for both development and production
+      ssl: {
+        rejectUnauthorized: false // Required for AWS RDS SSL connection
+      }
     }
   } catch (error) {
     console.error('Error parsing DATABASE_URL:', error)
